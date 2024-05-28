@@ -1,0 +1,26 @@
+name: ChatGPT API Call
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  call-openai-api:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Call OpenAI API
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      run: |
+        curl https://api.openai.com/v1/engines/davinci-codex/completions \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Bearer $OPENAI_API_KEY" \
+          -d '{
+            "prompt": "Translate the following English text to French: \'Hello, world!\'",
+            "max_tokens": 60
+          }'
